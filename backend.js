@@ -128,6 +128,29 @@ connection.end()
 
 
 
+  app.get('/orokbefogadas', (req, res) => {
+    const mysql = require('mysql')
+    const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'sziavangazdadia'
+  })
+  
+  connection.connect()
+  
+  
+  connection.query('SELECT * FROM felhasznalok inner join orokbefogadas on felhasznalok.felhasznalok_id = orokbefogadas.orokbefogad_felid where orokbefogadas.orokbefogad_felid = felhasznalok.felhasznalok_id and felhasznalok.felhasznalok_id = orokbefogadas.orokbeadas_felid', (err, rows, fields) => {
+    if (err) throw err
+  
+    console.log(rows)
+    res.send(rows)
+  })
+  connection.end()
+    })
+
+
+
   
 
 app.listen(port, () => {
