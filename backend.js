@@ -150,6 +150,101 @@ connection.end()
     })
 
 
+    app.get('/orokbefogad', (req, res) => {
+      const mysql = require('mysql')
+      const connection = mysql.createConnection({
+      host: 'localhost',
+      user: 'root',
+      password: '',
+      database: 'sziavangazdadia'
+    })
+    
+    connection.connect()
+    
+    
+    connection.query('select felhasznalok.felhasznalok_id, felhasznalok.felhasznalo_teljesnev,orokbefogadas.orokbefogado ,orokbefogadas.orokbeado from felhasznalok inner join orokbefogadas on felhasznalok.felhasznalok_id = orokbefogadas.ofelhasznalo_id', (err, rows, fields) => {
+      if (err) throw err
+    
+      console.log(rows)
+      res.send(rows)
+    })
+    connection.end()
+      })
+
+
+      app.post('/telepulesenkent', (req, res) => {
+        kapcsolat().then(connection => {
+          connection.query(`select * from menhelyek inner join telepulesek on menehelyek_telepules = telepules_id WHERE menehelyek_telepules = ${req.body.atkuld1} `, (err, rows, fields) => {
+            if (err) {
+              console.log("Hiba", err);
+              res.status(500).send("Hiba");
+            } else {
+              console.log(rows);
+              res.send(rows);
+            }
+            // Kapcsolat felszabadítása
+            connection.release();
+          });
+        }).catch(error => {
+          console.error("Kapcsolat hiba", error);
+          res.status(500).send("Kapcsolat hiba");
+        });
+      });
+
+      app.post('/keresvaros', (req, res) => {
+        kapcsolat()
+        
+        connection.query(`select * from menhelyek inner join telepulesek on menehelyek_telepules = telepules_id WHERE menehelyek_telepules = ${req.body.atkuld1};`, (err, rows, fields) => {
+        if (err) {
+          console.log("Hiba")
+        }
+        else{
+          console.log(rows)
+          res.send(rows)
+        }
+        
+        })
+        connection.end() 
+        })
+      
+        app.post('/keresfelhasznalo', (req, res) => {
+        kapcsolat()
+        
+        connection.query(`select felhasznalo_teljesnev,felhasznalo_email,felhasznalo_telefon,felhasznalo_commentiras,felhasznalo_commentetkapott,orokbefogadas.orokbefogado,orokbefogadas.orokbeado from felhasznalok inner join orokbefogadas on felhasznalok.felhasznalok_id = orokbefogadas.ofelhasznalo_id WHERE felhasznalok.felhasznalok_id = ${req.body.atkuld11};`, (err, rows, fields) => {
+        if (err) {
+          console.log("Hiba")
+        }
+        else{
+          console.log(rows)
+          res.send(rows)
+        }
+        
+        })
+        connection.end() 
+        })
+
+        app.get('/lenyilolista2', (req, res) => {
+          const mysql = require('mysql')
+          const connection = mysql.createConnection({
+          host: 'localhost',
+          user: 'root',
+          password: '',
+          database: 'sziavangazdadia'
+        })
+        
+        connection.connect()
+        
+        
+        connection.query('SELECT * FROM felhasznalok', (err, rows, fields) => {
+          if (err) throw err
+        
+          console.log(rows)
+          res.send(rows)
+        })
+        connection.end()
+          })
+      
+
 
   
 
