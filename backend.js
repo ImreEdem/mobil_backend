@@ -210,7 +210,7 @@ connection.end()
         app.post('/keresfelhasznalo', (req, res) => {
         kapcsolat()
         
-        connection.query(`select felhasznalo_teljesnev,felhasznalo_email,felhasznalo_telefon,felhasznalo_commentiras,felhasznalo_commentetkapott,orokbefogadas.orokbefogado,orokbefogadas.orokbeado from felhasznalok inner join orokbefogadas on felhasznalok.felhasznalok_id = orokbefogadas.ofelhasznalo_id WHERE felhasznalok.felhasznalok_id = ${req.body.atkuld11};`, (err, rows, fields) => {
+        connection.query(`select * from felhasznalok inner join orokbefogadas on felhasznalok.felhasznalok_id = orokbefogadas.ofelhasznalo_id WHERE felhasznalok.felhasznalok_id = ${req.body.atkuld11};`, (err, rows, fields) => {
         if (err) {
           console.log("Hiba")
         }
